@@ -1,5 +1,5 @@
 /* Package */
-package algorithms
+package graphos_algorithms
 
 /* Imports */
 import (
