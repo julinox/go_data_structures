@@ -14,7 +14,7 @@
 */
 
 /* Package */
-package go_graph_algorithms
+package algorithms
 
 /* Imports */
 import (
