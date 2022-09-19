@@ -38,7 +38,7 @@ func Bfs(graph graphos.Grapho, s, e int) (*BfsReturn) {
 
   /*
     s: Start vertex
-    e: End vertex (optional
+    e: End vertex (optional)
     Path: Track the vertex where you came from
     Distance: Track the number of jumps (or layers) needed to reach
     the 'current' vertex
