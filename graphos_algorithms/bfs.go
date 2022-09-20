@@ -179,7 +179,3 @@ func ReconstructPath(rPath *[]int, s, e int) (*[]int) {
 
   return &reversed
 }
-
-func TopSort(graph graphos.Grapho) (*[]int) {
-  return &[]int{}
-}
