@@ -3,6 +3,7 @@ package graphos
 
 /* Imports */
 import (
+  "os"
   "fmt"
 )
 
@@ -356,6 +357,46 @@ func (gl *GraphList) PrintFlags() (string) {
   }
 
   return ret
+}
+
+func (gl *GraphList) ExportAsGviz(fileName string) () {
+
+  /*
+    Export as 'graphviz' format
+  */
+
+  var arrow string = "--"
+
+  if (fileName == "") {
+    return
+  }
+
+
+  f, err := os.Create(fileName)
+  if (err != nil) {
+    return
+  }
+
+  if (gl.Flags & GRAPH_DIRECTED == GRAPH_DIRECTED) {
+    fmt.Fprintf(f, "digraph {\n")
+    arrow = "->"
+
+  } else if (gl.Flags & GRAPH_MULTIEDGE == GRAPH_MULTIEDGE) {
+    fmt.Fprintf(f, "graph {\n")
+
+  } else {
+    fmt.Fprintf(f, "strict graph {\n")
+  }
+
+  for _, v1 := range *(gl.VertexList()) {
+    for _, v2 := range *(gl.VertexNeighbours(v1)) {
+      fmt.Fprintf(f, "  %v %v %v\n", v1, arrow, v2)
+    }
+  }
+
+  fmt.Fprintf(f, "}\n")
+  f.Close()
+  return
 }
 
 /* Interface 'stringer' */
