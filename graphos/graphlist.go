@@ -371,7 +371,6 @@ func (gl *GraphList) ExportAsGviz(fileName string) () {
     return
   }
 
-
   f, err := os.Create(fileName)
   if (err != nil) {
     return
