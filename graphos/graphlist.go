@@ -359,43 +359,51 @@ func (gl *GraphList) PrintFlags() (string) {
   return ret
 }
 
-func (gl *GraphList) ExportAsGviz(fileName string) () {
+func (gl *GraphList) ExportAsGviz(fileName string) (error) {
 
   /*
     Export as 'graphviz' format
   */
 
+  var err2 error = nil
   var arrow string = "--"
 
   if (fileName == "") {
-    return
+    return nil
   }
 
-  f, err := os.Create(fileName)
-  if (err != nil) {
-    return
+  f, err1 := os.Create(fileName)
+  if (err1 != nil) {
+    return err1
   }
 
   if (gl.Flags & GRAPH_DIRECTED == GRAPH_DIRECTED) {
-    fmt.Fprintf(f, "digraph {\n")
     arrow = "->"
+    _, err2 = fmt.Fprintf(f, "digraph {\n")
 
   } else if (gl.Flags & GRAPH_MULTIEDGE == GRAPH_MULTIEDGE) {
-    fmt.Fprintf(f, "graph {\n")
+    _, err2 = fmt.Fprintf(f, "graph {\n")
 
   } else {
-    fmt.Fprintf(f, "strict graph {\n")
+    _, err2 = fmt.Fprintf(f, "strict graph {\n")
+  }
+
+  defer f.Close()
+  if (err2 != nil) {
+    return err2
   }
 
   for _, v1 := range *(gl.VertexList()) {
     for _, v2 := range *(gl.VertexNeighbours(v1)) {
-      fmt.Fprintf(f, "  %v %v %v\n", v1, arrow, v2)
+      _, err3 := fmt.Fprintf(f, "  %v %v %v\n", v1, arrow, v2)
+      if (err3 != nil) {
+        return err3
+      }
     }
   }
 
   fmt.Fprintf(f, "}\n")
-  f.Close()
-  return
+  return nil
 }
 
 /* Interface 'stringer' */
