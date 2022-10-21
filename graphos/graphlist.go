@@ -394,14 +394,24 @@ func (gl *GraphList) ExportAsGviz(fileName string) (error) {
   }
 
   for _, v1 := range *(gl.VertexList()) {
+    l1 := fmt.Sprintf("%v", v1)
     aux := len(*(gl.VertexNeighbours(v1))) - 1
-    fmt.Fprintf(f, "  %v %v {", v1, arrow)
+    if (gl.VertexTag(v1) != "") {
+      l1 = fmt.Sprintf("%v_%v", gl.VertexTag(v1), v1)
+    }
+
+    fmt.Fprintf(f, "  %v %v {", l1, arrow)
     for i, v2 := range *(gl.VertexNeighbours(v1)) {
+      l2 := fmt.Sprintf("%v", v2)
       space := " "
       if (i == aux) {
         space = ""
       }
-      _, err3 := fmt.Fprintf(f, "%v%v", v2, space)
+
+      if (gl.VertexTag(v2) != "") {
+        l2 = fmt.Sprintf("%v_%v", gl.VertexTag(v2), v2)
+      }
+      _, err3 := fmt.Fprintf(f, "%v%v", l2, space)
       if (err3 != nil) {
         return err3
       }
