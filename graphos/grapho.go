@@ -53,7 +53,7 @@ type Grapho interface {
   EdgeAdd(int, int, int) (bool)
   EdgeRemove(int, int, int) (bool)
   EdgeWeight(int, int) (int)
-  ExportAsGviz(string) ()
+  ExportAsGviz(string) (error)
   PrintFlags() (string)
 }
 
